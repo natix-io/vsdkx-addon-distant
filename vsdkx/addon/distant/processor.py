@@ -13,7 +13,7 @@ class DistanceChecker(Addon):
                  model_config: dict, drawing_config: dict):
         super().__init__(addon_config, model_settings, model_config,
                          drawing_config)
-        self._distance_threshold = model_settings.get(
+        self._distance_threshold = addon_config.get(
             "camera_distance_threshold", 0)
         self._height, self._width = model_settings['target_shape']
 
