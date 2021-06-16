@@ -47,6 +47,3 @@ class DistanceChecker(Addon):
         inference.boxes = updated_boxes
         inference.scores = updated_scores
         return inference
-
-    def pre_process(self, frame: ndarray) -> ndarray:
-        pass
