@@ -15,15 +15,15 @@ class DistanceChecker(Addon):
                          drawing_config)
         self._distance_threshold = addon_config.get(
             "camera_distance_threshold", 0)
-        self._height, self._width = model_settings['target_shape']
 
-    def post_process(self, inference: Inference) -> Inference:
+    def post_process(self, frame: ndarray, inference: Inference) -> Inference:
         """
         Check if there are people on frame close to camera, and filter the
         bounding boxes and scores of those within the borders of a certain
         distance threshold.
 
         Args:
+            frame (ndarray): the frame data
             inference (Inference): The result of the ai
 
         Returns:
@@ -39,7 +39,8 @@ class DistanceChecker(Addon):
 
             # filter people boxes by threshold
             if (box_height * box_width) > \
-                    (self._distance_threshold * self._width * self._height):
+                    (self._distance_threshold * frame.shape[1] * frame.shape[
+                        0]):
                 # print(self.distance_threshold * width * height)
                 # print(box_height * box_width)
                 updated_boxes.append(box)
