@@ -2,7 +2,7 @@ from setuptools import setup, find_namespace_packages
 
 setup(
     name='vsdkx-addon-distant',
-    url='https://gitlab.com/natix/cvison/vsdkx/vsdkx-addon-distant',
+    url='https://github.com/natix-io/vsdkx-addon-distant.git',
     author='Helmut',
     author_email='helmut@natix.io',
     namespace_packages=['vsdkx', 'vsdkx.addon'],
