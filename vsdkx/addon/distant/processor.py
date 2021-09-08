@@ -1,6 +1,4 @@
-from vsdkx.core.interfaces import Addon
-from vsdkx.core.structs import Inference
-from numpy import ndarray
+from vsdkx.core.interfaces import Addon, AddonObject
 
 
 class DistanceChecker(Addon):
@@ -16,15 +14,15 @@ class DistanceChecker(Addon):
         self._distance_threshold = addon_config.get(
             "camera_distance_threshold", 0)
 
-    def post_process(self, frame: ndarray, inference: Inference) -> Inference:
+    def post_process(self, addon_object: AddonObject) -> AddonObject:
         """
         Check if there are people on frame close to camera, and filter the
         bounding boxes and scores of those within the borders of a certain
         distance threshold.
 
         Args:
-            frame (ndarray): the frame data
-            inference (Inference): The result of the ai
+            addon_object (AddonObject): addon object containing information
+            about inference, frame, other addons shared data
 
         Returns:
             updated_boxes (list): List with filtered bounding boxes
@@ -33,18 +31,19 @@ class DistanceChecker(Addon):
         updated_boxes = []
         updated_scores = []
 
-        for box, score in zip(inference.boxes, inference.scores):
+        for box, score in zip(addon_object.inference.boxes,
+                              addon_object.inference.scores):
             box_height = box[3] - box[1]
             box_width = box[2] - box[0]
 
             # filter people boxes by threshold
             if (box_height * box_width) > \
-                    (self._distance_threshold * frame.shape[1] * frame.shape[
-                        0]):
-                # print(self.distance_threshold * width * height)
-                # print(box_height * box_width)
+                    (self._distance_threshold
+                     * addon_object.frame.shape[1]
+                     * addon_object.frame.shape[0]):
+
                 updated_boxes.append(box)
                 updated_scores.append(score)
-        inference.boxes = updated_boxes
-        inference.scores = updated_scores
-        return inference
+        addon_object.inference.boxes = updated_boxes
+        addon_object.inference.scores = updated_scores
+        return addon_object
