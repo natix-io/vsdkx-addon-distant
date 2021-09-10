@@ -12,7 +12,7 @@ setup(
     ],
     install_requires=[
         'vsdkx-core',
-        'numpy==1.18.5',
+        'numpy>=1.18.5',
     ],
     version='1.0',
 )
